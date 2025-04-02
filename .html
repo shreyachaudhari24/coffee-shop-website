@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        header.scrolled {
+            background-color: #222;
+            transform: translateY(-10px);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        header h1 {
+            margin: 0;
+       
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        header nav ul li {
+            margin-left: 20px;
+        }
+
+        header nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        header nav ul li a:hover,
+        header nav ul li a.active {
+            background-color: #555;
+            transform: scale(1.1);
+        }
+
+
+        section {
+            padding: 20px;
+            margin-top: 60px; /* Adjust for fixed header */
+            display: none;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+      }
+
+        section#home {
+height: auto;
+min-height: 100vh;
+        background: url('coffee-hero-bg (1).jpg') no-repeat center center;
+            background-size: cover;
+            background-position: center;
+       width: 100%;
+       color: #fff;
+            text-align: center;
+            padding: 100px 20px;
+}
+
+ 
+  
+        section#menu {
+            text-align: center;
+        }
+
+        section#menu h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        section#menu h2:hover {
+            transform: scale(1.05);
+        }
+
+        section#menu .menu-item {
+            display: inline-block;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            text-align: left;
+            width: calc(50% - 40px);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        section#menu .menu-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        section#menu img {
+            width: 100%;
+            height: auto;
+            transition: opacity 0.5s ease;
+        }
+
+        section#menu img:hover {
+            opacity: 0.9;
+        }
+
+        section#menu .menu-item .description {
+            padding: 10px;
+        }
+
+        section#menu .menu-item .price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #333;
+            padding: 0 10px 10px;
+        }
+
+        section#order-form {
+            text-align: center;
+        }
+
+        section#order-form h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        section#order-form form {
+            display: inline-block;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        section#order-form form input, 
+        section#order-form form textarea, 
+        section#order-form form select {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        section#order-form form button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        section#order-form form button:hover {
+            background-color: #555;
+        }
+
+        section#about {
+            text-align: center;
+        }
+
+        section#about img {
+            width: 150px;
+            height: auto;
+            border-radius: 50%;
+            margin: 20px 0;
+        }
+
+        section#about h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        section#about p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        footer a {
+            color: #ff9800; /* Changed link color */
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header nav ul {
+                flex-direction: column;
+                margin-top: 10px;
+            }
+
+            header nav ul li {
+                margin: 5px 0;
+            }
+
+            section#menu .menu-item {
+                width: 90%;
+                margin: 10px auto;
+            }
+
+            section#menu .menu-item .description {
+                padding: 5px;
+            }
+
+            form input, form textarea, form select {
+                font-size: 0.9rem;
+            }
+
+            form button {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section#home {
+                padding: 50px 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            header nav ul li a {
+                padding: 5px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Coffee Shop</h1>
+            <nav>
+                <ul>
+                    <li><a href="home.html" onclick="showSection('home')">Home</a></li>
+                    <li><a href="best selling.html" onclick="showSection('best selling.html')">Menu</a></li>
+                    <li><a href="#" onclick="showSection('about')">About</a></li>
+                    <li><a href="product.html" onclick="showSection('Products')">Products</a></li>
+ <li><a href="#" onclick="showSection('order-form')">Order</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="active">
+        <div class="container">
+            <h2>Welcome to Our Coffee Shop!</h2>
+            <p>Enjoy our freshly brewed coffee made with the finest beans.</p>
+
+        </div>
+
+
+    </section>
+
+    <section id="order-form">
+        <div class="container">
+
+
+            <h2>Order Form</h2>
+ 
+            <form id="orderForm">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="phone">Your Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+                
+                <label for="address">Your Address:</label>
+                <textarea id="address" name="address" rows="4" required></textarea>
+                
+                <label for="quantity">Number of Pieces:</label>
+                <input type="number" id="quantity" name="quantity" min="1" required>
+                
+                <label for="item">Select Item:</label>
+                <select id="item" name="item" required>
+                    <option value="Bulletproof Coffee">Bulletproof Coffee</option>
+                    <option value="Flat White">Flat White</option>
+                    <option value="Vegan Masala Chai">Vegan Masala Chai</option>
+                    <option value="caramel Frappe">Caramel Frappe</option>
+                    <option value="Frappuccino">Frappuccino</option>
+                    <option value="Affogato">Affogato</option>
+                     <option value="cappuccino">Cappucino</option>
+                    <option value="Oreo iced cold coffee">Oreo iced cold coffee</option>
+                    <option value="Oreo frappe">Oreo frappe</option>
+                    <option value="Mochaccino">Mochaccino</option>
+                </select>
+                
+                <button type="button" onclick="submitOrder()">Submit Order</button>
+            </form>
+        </div>
+    </section>
+
+   
+         <section id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <img src="https://i.postimg.cc/d1dQmZKz/378b01ce-bd78-4c40-a1e3-c38def96582f.webp" alt="Rahad Hassain"> 
+<p> We take pride in delivering freshly brewed coffee to your doorstep within 20 minutes anywhere within Jessore Sadar.</p>
+            <p>Our shop is managed by Rahad Hossain, who is passionate about bringing you the best coffee experience possible.</p>
+        
+            <img src="jastin moana.webp" alt="jastin moana">
+            <p>A highly motivated and organized cafe worker with 1 year of experience in food service, customer service, and inventory management. Skilled in food preparation, cash handling, and cleaning and sanitation. Strong communication and teamwork abilities, and a commitment to providing excellent customer service.</p>
+</div>
+
+<h1 style="font-size: 50px; text-align:center;">Discover the art of real coffee</h1>
+
+<p style="font-size: 20px; text-align:center; line-height:30px; margin-bottom:50px">This is one of the most versatile coffee shop websites around<br>. Among the different website pages, you’ll find more traditional layouts, with opening hours, location, and contact information on the contact page, as well as more unique designs that use eye-catching layouts and grids to display your content. 
+There’s also a handy coming soon demo that’s perfect for building anticipation in the run-up to your coffee shop’s opening.<br>Theme’s design is fully customizable and highly optimized for mobile, so will adapt itself to any mobile or tablet device.<br> The theme is ready-to-use, with no needed coding or design skills.<br> The theme offers all essential restaurant features such as responsive owl carousel slider, menu management, gallery management, blogging, and also a working contact form. </p>
+
+<center>
+<div>
+<a style="font-size:20px; background-color: red;" padding: 15px 35px 15px 35px; color: white;" href="https://www.google.com/">Read More</a>
+</div>
+</center>
+
+<p style="font-size: 20px; text-align:center; line-height:30px; margin-bottom:50px">If you’re looking for a great cup of coffee, you can’t go wrong with J5 Coffee Shop and Espresso Bar. They have a wide selection of coffees to choose from, and they’re all made with high-quality coffee beans. The coffee is known for being fresh, and the coffee shop website even lets you order ahead and grab your cup of Joe on the run.. </p>
+
+<center>
+<img style="width: 50%; " src="image6.jpg">  
+</center>
+<p style="font-size: 20px; text-align:center; line-height:30px; margin-bottom:50px">If you’re looking for a great cup of coffee, you can’t go wrong with J5 Coffee Shop and Espresso Bar. They have a wide selection of coffees to choose from, and they’re all made with high-quality coffee beans. The coffee is known for being fresh, and the coffee shop website even lets you order ahead and grab your cup of Joe on the run.. </p>
+
+<center> 
+<img style="width: 50%; " src="b1.jpg">   
+</center>
+
+
+    </section>
+
+    <section class="Menu">
+        <h2 class="fw-bold">Menu</h2>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+
+        <ul class="nav nav-tabs justify-content-center mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">All</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Black</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Espresso</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Doppio</a>
+            </li>
+        </ul>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="cappuccino.webp" alt="Cappuccino">
+                        <h5 class="mt-3">Cappuccino</h5>
+<div class="price">Rs.300/-</div>
+                   
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="americano.webp" alt="Americano">
+                        <h5 class="mt-3">Americano</h5>
+<div class="price">Rs.278/-</div>
+                 
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="expresso.jpg" alt="Espresso">
+                        <h5 class="mt-3">Espresso</h5>
+<div class="price">Rs.410/-</div>
+                   
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                   </div>
+<hr>
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="m1.webp" alt="long black">
+                        <h5 class="mt-3">Long black</h5>
+<div class="price">Rs.400/-</div>
+                    
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="m2.jpg" alt="Doppio">
+                        <h5 class="mt-3">Doppio</h5>
+<div class="price">Rs.359/-</div>
+                 
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="m3.jpg" alt="Restritto">
+                        <h5 class="mt-3">Restritto</h5>
+<div class="price">Rs.450/-</div>
+                  
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+<hr>
+ <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="m4.jpg" alt="Iraish coffee">
+                        <h5 class="mt-3">Irais coffee</h5>
+<div class="price">Rs.250/-</div>
+                  
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                   </div>
+
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="m5.jpg" alt="Latte">
+                        <h5 class="mt-3">Latte</h5>
+<div class="price">Rs.200/-</div>
+                  
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="m6.jpg" alt="Green Mocha">
+                        <h5 class="mt-3">Green mocha</h5>
+<div class="price">Rs.370/-</div>
+              
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+<hr>
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="m7.jpg" alt="Caffe macchinato">
+                        <h5 class="mt-3">Caffe macchinato</h5>
+<div class="price">Rs.400/-</div>
+             
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="m8.jpg" alt="oreo cold coffee">
+                        <h5 class="mt-3">Oreo cold coffee</h5>
+<div class="price">Rs.500/-</div>
+                   
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="c1.jpg" alt="Affogato">
+                        <h5 class="mt-3">Affogato</h5>
+<div class="price">Rs.450/-</div>
+            
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+<hr>
+
+                      <div class="col-md-4">
+                    <div class="product-card">
+                        <img src="c2.jpg" alt="Mocha">
+                        <h5 class="mt-3">Mocha</h5>
+<div class="price">Rs.490/-</div>
+             
+                        <button class="btn btn-dark mt-2">Order Now</button>
+                    </div>
+                </div>
+
+
+
+<section id="Products">
+        <div class="container">
+            
+<center>
+    <h1>Our Coffee Products</h1>
+</center>
+
+<center>
+<a style="font-size:20px; background-color: white;" padding: 15px 35px 15px 35px; color: black;" href="https://www.google.com/">Read More</a>
+</div>
+</center>
+
+<h1 style="font-size:30px; text-align: center;">
+
+    <div class="product-container">
+
+        <div class="product-item">
+            <img src="arabica coffee.jpg">
+            <p>Strong and bold shot of coffee.</p>
+            <p class="price">Rs.500/-</p>
+            <button class="buy-button">Buy Now</button>
+<hr>
+        </div>
+
+
+        <div class="product-item">
+            <img src="black coffee.jpg">
+            <p>Rich espresso with frothy milk.</p>
+            <p class="price">Rs. 689/-</p>
+            <button class="buy-button">Buy Now</button>
+<hr>
+        </div>
+
+        <div class="product-item">
+            <img src="cappucino coffee.jpg">
+            <p>Espresso mixed with steamed milk.</p>
+            <p class="price">Rs.1,000/-</p>
+            <button class="buy-button">Buy Now</button>
+<hr>
+        </div>
+
+
+
+        <div class="product-item">
+            <img src="Dcaf coffee.jpg">
+            <p>Espresso with choclate flavoured</p>
+         <p> chocolate and milk.</p>
+            <p class="price">Rs.999/-</p>
+            <button class="buy-button">Buy Now</button>
+<hr>
+        </div>
+
+        <div class="product-item">
+            <img src="Expresso coffee.jpg">
+            <p>Espresso diluted with hot water.</p>
+            <p class="price">Rs.867/-</p>
+            <button class="buy-button">Buy Now</button>
+<hr>
+        </div>
+    </div>
+</body>
+</html>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Coffee Shop. Contact us at <a href="mailto:shreya2410@gmail.com">shreya2410@gmail.com</a></p>
+        </div>
+    </footer>
+
+    <!-- Include jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        let currentOrder = {};
+
+        function setOrder(itemName, itemPrice) {
+            currentOrder = { itemName, itemPrice };
+            showSection('order-form');
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const item = document.getElementById('item').value;
+
+            const totalAmount = currentOrder.itemPrice * quantity;
+            const freeItem = quantity >= 5 ? '1 Free Item' : 'None';
+
+            const doc = new jsPDF();
+
+            doc.text(`Order Confirmation`, 10, 10);
+            doc.text(`Name: ${name}`, 10, 20);
+            doc.text(`Phone Number: ${phone}`, 10, 30);
+            doc.text(`Address: ${address}`, 10, 40);
+            doc.text(`Item: ${item}`, 10, 50);
+            doc.text(`Quantity: ${quantity}`, 10, 60);
+            doc.text(`Total Amount: ৳${totalAmount}`, 10, 70);
+            doc.text(`Free Item: ${freeItem}`, 10, 80);
+
+            doc.save('order-confirmation.pdf');
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the selected section
+            const sectionToShow = document.getElementById(sectionId);
+            sectionToShow.classList.add('active');
+
+            // Update navigation bar links
+            const navLinks = document.querySelectorAll('header nav ul li a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`header nav ul li a[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        // Change header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
+
+m
